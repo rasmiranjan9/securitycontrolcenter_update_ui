@@ -79,7 +79,7 @@ export function AppRouter() {
 
         {/* Authenticated shell — AppLayout with NavRail */}
         <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
-          <Route index element={<Navigate to={getRoutePath('kernel-dashboard')} replace />} />
+          <Route index element={<Navigate to={getRoutePath('login')} replace />} />
 
           {/* Monitoring */}
           {/* /scc → SCC Root Landing (AI Welcome); /kernel → Real Dashboard */}
@@ -130,7 +130,7 @@ export function AppRouter() {
         </Route>
 
         {/* Catch-all */}
-        <Route path="*" element={<Navigate to={getRoutePath('kernel-dashboard')} replace />} />
+        <Route path="*" element={<Navigate to={getRoutePath('login')} replace />} />
       </Routes>
     </BrowserRouter>
   );

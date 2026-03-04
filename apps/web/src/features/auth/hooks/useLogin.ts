@@ -31,8 +31,8 @@ export function useLogin(): UseLoginReturn {
             //   await msalInstance.loginPopup(loginRequest);
             await login({ email: 'demo@claas2saas.com', password: '' });
 
-            // On success → redirect to kernel dashboard
-            navigate(getRoutePath('kernel-dashboard'), { replace: true });
+            // On success → redirect to ECC
+            navigate(getRoutePath('ecc'), { replace: true });
         } catch (err) {
             const message = err instanceof Error ? err.message : 'Authentication failed. Please try again.';
             setState({ isLoading: false, error: message });

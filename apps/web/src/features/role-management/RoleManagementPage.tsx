@@ -54,6 +54,10 @@ const useStyles = makeStyles({
     margin: 0,
   },
   card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: '12px',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.06)',
+    padding: '24px',
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
@@ -62,10 +66,6 @@ const useStyles = makeStyles({
     width: '100%',
   },
   tableWrapper: {
-    padding: '25px',
-    borderRadius: '8px',
-    backgroundColor: '#FFFFFF',
-    boxShadow: '0 3px 10px rgba(0,0,0,0.05)',
     overflowX: 'auto' as const,
   },
   dataTable: {

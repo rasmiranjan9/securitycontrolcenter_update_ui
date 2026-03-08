@@ -109,9 +109,13 @@ const useStyles = makeStyles({
         },
     },
     tabActive: {
-        color: '#2F4A73',
-        borderBottomColor: '#2F4A73',
+        color: '#193E6B',
         fontWeight: 600,
+        borderBottom: '3px solid #1F6FD9',
+        backgroundColor: '#FFFFFF',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+        boxShadow: '0 -1px 0 #FFFFFF',
     },
     tabDot: {
         width: '8px',
@@ -201,14 +205,18 @@ const useStyles = makeStyles({
         borderCollapse: 'collapse',
     },
     th: {
-        padding: '12px 16px',
+        padding: '14px 16px',
         fontSize: '13px',
         fontWeight: 600,
         color: '#193E6B',
         textAlign: 'left',
         borderBottom: '1px solid #E6ECF3',
         whiteSpace: 'nowrap',
+        backgroundColor: '#F5F3F0',
     },
+    theadRow: {
+    backgroundColor: '#F5F3F0',
+},
     tr: {
         height: '64px',
         borderBottom: '1px solid #E6ECF3',

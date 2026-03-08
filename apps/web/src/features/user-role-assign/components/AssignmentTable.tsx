@@ -2,7 +2,7 @@
 // FEATURE FILE — Table for displaying User Role Assignments.
 // Vanilla table spec — identical base table styles.
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { makeStyles } from '@fluentui/react-components';
 import { getModuleName } from '@/constants/modules';
 import { EditRegular, DeleteRegular, CalendarRegular } from '@fluentui/react-icons';
@@ -31,8 +31,9 @@ const useStyles = makeStyles({
     overflowX: 'auto' as const,
   },
   dataTable: {
-    width: '100%',
-    borderCollapse: 'collapse' as const,
+     width: '100%',
+      borderCollapse: 'collapse' as const,
+      tableLayout: 'auto' as const,
   },
   th: {
     padding: '15px 12px',
@@ -41,6 +42,9 @@ const useStyles = makeStyles({
     color: '#193e6b',
     textAlign: 'left' as const,
     borderBottom: '1px solid rgba(0,0,0,0.05)',
+    whiteSpace: 'nowrap' as const,
+    backgroundColor: '#f5f6f8',
+    borderTop: '1px solid rgba(0,0,0,0.05)',
   },
   td: {
     padding: '15px 12px',
@@ -139,6 +143,12 @@ export interface AssignmentTableProps {
 export function AssignmentTable({ assignments, onUpdated, onDelete }: AssignmentTableProps) {
   const styles = useStyles();
   const [editing, setEditing] = useState<UserRoleAssignment | null>(null);
+  const [toast, setToast] = useState(false);
+  useEffect(() => {
+  if (toast) {
+    setTimeout(() => setToast(false), 3000);
+  }
+}, [toast]);
 
   return (
     <>
@@ -179,7 +189,15 @@ export function AssignmentTable({ assignments, onUpdated, onDelete }: Assignment
                       <button
                         type="button"
                         className={styles.iconBtn}
-                        onClick={() => { console.log('Delete', row.id); onDelete(row.id); }}
+                        onClick={() => {
+                              const confirmDelete = window.confirm(
+                                "Are you sure you want to delete this assignment?"
+                              );
+                              if (confirmDelete) {
+                                onDelete(row.id);
+                                setToast(true);
+                              }
+                            }}
                         aria-label={`Delete assignment for ${row.userName}`}
                       >
                         <DeleteRegular fontSize={16} />
@@ -230,7 +248,23 @@ export function AssignmentTable({ assignments, onUpdated, onDelete }: Assignment
           </tbody>
         </table>
       </div>
-
+      {toast && (
+  <div
+    style={{
+      position: "fixed",
+      bottom: "25px",
+      right: "25px",
+      background: "#2f6f4e",
+      color: "#fff",
+      padding: "12px 18px",
+      borderRadius: "8px",
+      fontSize: "14px",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
+    }}
+  >
+    ✓ Assignment deleted
+  </div>
+)}
       <EditRoleAssignmentModal
         open={!!editing}
         assignment={editing}

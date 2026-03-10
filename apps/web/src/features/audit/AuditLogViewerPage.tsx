@@ -172,10 +172,14 @@ const useStyles = makeStyles({
         alignItems: 'center',
         gap: '8px',
         flexWrap: 'wrap',
+        backgroundColor: '#EEF1F5',
+        padding: '6px',
+        borderRadius: '8px',
+        width: 'fit-content',
     },
     filterPill: {
         padding: '6px 16px',
-        borderRadius: '20px',
+        borderRadius: '8px',
         fontSize: '13px',
         fontWeight: 500,
         background: '#F1F4F9',
@@ -189,10 +193,11 @@ const useStyles = makeStyles({
         },
     },
     filterPillActive: {
-        background: '#FFFFFF',
+        backgroundColor: '#FFFFFF',
         border: '1px solid #E6ECF3',
         color: '#1F2D3D',
         fontWeight: 600,
+        borderRadius: '6px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
     },
 
@@ -205,14 +210,14 @@ const useStyles = makeStyles({
         borderCollapse: 'collapse',
     },
     th: {
-        padding: '14px 16px',
-        fontSize: '13px',
-        fontWeight: 600,
+        padding: '12px 16px',
+        fontSize: '14px',
+        fontWeight: 700,
         color: '#193E6B',
         textAlign: 'left',
         borderBottom: '1px solid #E6ECF3',
         whiteSpace: 'nowrap',
-        backgroundColor: '#F5F3F0',
+        backgroundColor: '#F8F6F3'
     },
     theadRow: {
     backgroundColor: '#F5F3F0',
@@ -221,7 +226,7 @@ const useStyles = makeStyles({
         height: '64px',
         borderBottom: '1px solid #E6ECF3',
         ':hover': {
-            backgroundColor: '#F5F0EB',
+            backgroundColor: '#F7F3EE',
         },
     },
     trLast: {
@@ -563,7 +568,7 @@ function SessionLogsTable() {
                                     </td>
 
                                     {/* Status */}
-                                    <td className={styles.td} style={{ textAlign: 'right' }}>
+                                    <td className={styles.td} style={{ textAlign: 'center' }}>
                                         <StatusBadge status={session.status} />
                                     </td>
                                 </tr>
@@ -815,7 +820,9 @@ function AuditLogViewerContent() {
                     className={mergeClasses(styles.tab, activeTab === 'sessions' && styles.tabActive)}
                     onClick={() => setActiveTab('sessions')}
                 >
-                    <span className={styles.tabDot} aria-hidden style={{ backgroundColor: activeTab === 'sessions' ? '#193E6B' : '#C0CAD4' }} />
+                     <span style={{ display: "flex", alignItems: "center" }}>
+    <IconClock />
+  </span>
                     Session Logs
                 </button>
                 <button

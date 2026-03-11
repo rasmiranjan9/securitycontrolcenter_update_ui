@@ -14,11 +14,14 @@ export type StatusFilter = 'ALL' | 'ACTIVE' | 'INACTIVE';
 
 const useStyles = makeStyles({
   wrapper: {
-    display: 'flex',
+     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
     padding: '16px 24px',
-   // borderBottom: '1px solid rgba(0,0,0,0.05)',
+    position: 'sticky',
+    top: 0,
+    zIndex: 30,
+    backgroundColor: '#ffffff'
   },
   searchRow: {
     display: 'flex',

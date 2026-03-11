@@ -24,11 +24,16 @@ function formatDate(iso: string): string {
 
 const useStyles = makeStyles({
   tableWrapper: {
-    padding: '25px',
+    padding: '10px 25px 25px 25px',
+    marginTop: '-20px',
     borderRadius: '8px',
     backgroundColor: '#FFFFFF',
     boxShadow: '0 3px 10px rgba(0,0,0,0.05)',
-    overflowX: 'auto' as const,
+    height: '420px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    position: 'relative'
+    
   },
   dataTable: {
      width: '100%',
@@ -40,14 +45,16 @@ const useStyles = makeStyles({
     fontSize: '14px',
     fontWeight: 600,
     color: '#193e6b',
-    textAlign: 'left' as const,
+    textAlign: 'left',
     borderBottom: '1px solid rgba(0,0,0,0.05)',
-    whiteSpace: 'nowrap' as const,
+    whiteSpace: 'nowrap',
     backgroundColor: '#f5f6f8',
-    borderTop: '1px solid rgba(0,0,0,0.05)',
+    position: 'sticky',
+    top: 0,
+    zIndex: 20,
   },
   td: {
-    padding: '15px 12px',
+    padding: '13px 12px',
     fontSize: '14px',
     color: '#333333',
     borderBottom: '1px solid rgba(0,0,0,0.05)',
@@ -100,7 +107,8 @@ const useStyles = makeStyles({
   },
   actionsCell: {
     display: 'flex',
-    gap: '8px',
+     justifyContent: 'flex-end',
+     gap: '8px',
     alignItems: 'center',
   },
   iconBtn: {
@@ -132,6 +140,7 @@ const useStyles = makeStyles({
     color: '#666666',
     fontSize: '14px',
   },
+  
 });
 
 export interface AssignmentTableProps {
@@ -156,7 +165,6 @@ export function AssignmentTable({ assignments, onUpdated, onDelete }: Assignment
         <table className={styles.dataTable} aria-label="User role assignments table">
           <thead>
             <tr>
-              <th className={styles.th}>Actions</th>
               <th className={styles.th}>User</th>
               <th className={styles.th}>Solution / Module</th>
               <th className={styles.th}>Role</th>
@@ -164,6 +172,7 @@ export function AssignmentTable({ assignments, onUpdated, onDelete }: Assignment
               <th className={styles.th}>Disable Date</th>
               <th className={styles.th}>Assigned By</th>
               <th className={styles.th}>Status</th>
+              <th className={styles.th}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -176,73 +185,86 @@ export function AssignmentTable({ assignments, onUpdated, onDelete }: Assignment
             ) : (
               assignments.map((row) => (
                 <tr key={row.id} className={styles.tr}>
-                  <td className={styles.td}>
-                    <div className={styles.actionsCell}>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => setEditing(row)}
-                        aria-label={`Edit assignment for ${row.userName}`}
-                      >
-                        <EditRegular fontSize={16} />
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => {
-                              const confirmDelete = window.confirm(
-                                "Are you sure you want to delete this assignment?"
-                              );
-                              if (confirmDelete) {
-                                onDelete(row.id);
-                                setToast(true);
-                              }
-                            }}
-                        aria-label={`Delete assignment for ${row.userName}`}
-                      >
-                        <DeleteRegular fontSize={16} />
-                      </button>
-                    </div>
-                  </td>
-                  <td className={styles.td}>
-                    <div className={styles.userBlock}>
-                      <span className={styles.userName}>{row.userName}</span>
-                      <span className={styles.userEmail}>{row.userEmail}</span>
-                    </div>
-                  </td>
-                  <td className={styles.td}>
-                    <div className={styles.solutionBlock}>
-                      <span className={styles.solutionCode}>{row.solutionCode}</span>
-                      <span className={styles.moduleCode}>{getModuleName(row.moduleCode)}</span>
-                    </div>
-                  </td>
-                  <td className={styles.td}>
-                    <div className={styles.roleBlock}>
-                      <RoleBadge roleCode={row.roleCode} roleLabel={row.roleCode.replace('_', ' ')} />
-                      <span className={styles.roleLabel}>{row.roleLabel}</span>
-                    </div>
-                  </td>
-                  <td className={styles.td}>
+
+                <td className={styles.td}>
+                  <div className={styles.userBlock}>
+                    <span className={styles.userName}>{row.userName}</span>
+                    <span className={styles.userEmail}>{row.userEmail}</span>
+                  </div>
+                </td>
+
+                <td className={styles.td}>
+                  <div className={styles.solutionBlock}>
+                    <span className={styles.solutionCode}>{row.solutionCode}</span>
+                    <span className={styles.moduleCode}>{getModuleName(row.moduleCode)}</span>
+                  </div>
+                </td>
+
+                <td className={styles.td}>
+                  <div className={styles.roleBlock}>
+                    <RoleBadge roleCode={row.roleCode} roleLabel={row.roleCode.replace('_', ' ')} />
+                    <span className={styles.roleLabel}>{row.roleLabel}</span>
+                  </div>
+                </td>
+
+                <td className={styles.td}>
+                  <div className={styles.dateBlock}>
+                    <span className={styles.dateIcon}>
+                      <CalendarRegular fontSize={14} />
+                    </span>
+                    {formatDate(row.assignedDate)}
+                  </div>
+                </td>
+
+                <td className={styles.td}>
+                  {row.disableDate ? (
                     <div className={styles.dateBlock}>
-                      <span className={styles.dateIcon}><CalendarRegular fontSize={14} /></span>
-                      {formatDate(row.assignedDate)}
+                      <span className={styles.dateIcon}>
+                        <CalendarRegular fontSize={14} />
+                      </span>
+                      {formatDate(row.disableDate)}
                     </div>
-                  </td>
-                  <td className={styles.td}>
-                    {row.disableDate ? (
-                      <div className={styles.dateBlock}>
-                        <span className={styles.dateIcon}><CalendarRegular fontSize={14} /></span>
-                        {formatDate(row.disableDate)}
-                      </div>
-                    ) : (
-                      <span className={styles.dash}>—</span>
-                    )}
-                  </td>
-                  <td className={styles.td}>{row.assignedBy}</td>
-                  <td className={styles.td}>
-                    <StatusBadge status={row.status} />
-                  </td>
-                </tr>
+                  ) : (
+                    <span className={styles.dash}>—</span>
+                  )}
+                </td>
+
+                <td className={styles.td}>{row.assignedBy}</td>
+
+                <td className={styles.td}>
+                  <StatusBadge status={row.status} />
+                </td>
+
+                {/* ACTIONS LAST COLUMN */}
+                <td className={styles.td}>
+                  <div className={styles.actionsCell}>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => setEditing(row)}
+                    >
+                      <EditRegular fontSize={16} />
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => {
+                        const confirmDelete = window.confirm(
+                          "Are you sure you want to delete this assignment?"
+                        );
+                        if (confirmDelete) {
+                          onDelete(row.id);
+                          setToast(true);
+                        }
+                      }}
+                    >
+                      <DeleteRegular fontSize={16} />
+                    </button>
+                  </div>
+                </td>
+
+              </tr>
               ))
             )}
           </tbody>

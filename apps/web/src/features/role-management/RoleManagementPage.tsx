@@ -28,7 +28,7 @@ import type { SecurityRole } from './types/securityRole';
 
 const useStyles = makeStyles({
   pageContent: {
-    padding: '30px',
+    padding: '10px 18px',
   },
   pageHeader: {
     marginBottom: '24px',
@@ -54,10 +54,12 @@ const useStyles = makeStyles({
     margin: 0,
   },
   card: {
-    background:"#ffffff",
-    borderRadius:"12px",
-    padding:"20px",
-    border:"1px solid #e5e7eb"
+    backgroundColor: '#ffffff',
+    borderRadius: '12px',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.06)',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '520px'   // 👈 important
   },
   searchWrap: {
     width: '100%',
@@ -66,7 +68,11 @@ const useStyles = makeStyles({
   borderRadius: '8px',
   backgroundColor: '#ffffff',
   overflow: 'hidden',
+  flex: 1,            // 👈 important
   border: '1px solid #e5e7eb',
+  overflowY: 'auto',
+  overflowX: 'hidden'
+
 },
   dataTable: {
     width: '100%',
@@ -80,6 +86,11 @@ const useStyles = makeStyles({
   color: '#1f3b64',
   textAlign: 'left',
   backgroundColor: '#f1f3f5',
+
+   position: 'sticky',
+  top: 0,
+  zIndex: 10,
+  backgroundColor: '#f5f6f8',
   borderBottom: '1px solid #e5e7eb',
 },
   td: {

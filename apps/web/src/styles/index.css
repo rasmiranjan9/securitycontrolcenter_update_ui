@@ -55,3 +55,7 @@ body,
   font-weight: 600;
   color: var(--color-text-primary);
 }
+html, body {
+  height: 100%;
+  overflow: hidden;
+}

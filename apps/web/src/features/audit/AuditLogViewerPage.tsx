@@ -59,7 +59,7 @@ function matchesFilter(session: AuditSessionLog, filter: SessionFilter): boolean
 const useStyles = makeStyles({
     // Page wrapper
     pageContent: {
-        padding: '32px',
+        padding: '10px 18px',
         backgroundColor: '#EEE7E0',
         minHeight: '100%',
         fontFamily: 'Inter, system-ui, sans-serif',
@@ -70,10 +70,10 @@ const useStyles = makeStyles({
         marginBottom: '24px',
     },
     pageTitle: {
-        fontSize: '28px',
+        fontSize: '24px',
         fontWeight: 600,
-        color: '#1F2D3D',
-        margin: '0 0 6px 0',
+        color: '#193e6b',
+        margin: 0,
         lineHeight: 1.3,
     },
     pageSubtitle: {
@@ -127,13 +127,17 @@ const useStyles = makeStyles({
 
     // Card
     card: {
-        backgroundColor: '#FFFFFF',
+         backgroundColor: '#FFFFFF',
         borderRadius: '12px',
         padding: '24px',
         boxShadow: '0 4px 10px rgba(0,0,0,0.06)',
+
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
+
+        height: '520px', 
+        overflow: 'hidden'
     },
 
     // Search
@@ -203,7 +207,11 @@ const useStyles = makeStyles({
 
     // Table
     tableWrap: {
-        overflowX: 'auto',
+         flex: 1,
+        minHeight: 0,        // 👈 VERY IMPORTANT
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        position: 'relative'
     },
     table: {
         width: '100%',
@@ -217,7 +225,10 @@ const useStyles = makeStyles({
         textAlign: 'left',
         borderBottom: '1px solid #E6ECF3',
         whiteSpace: 'nowrap',
-        backgroundColor: '#F8F6F3'
+        backgroundColor: '#F8F6F3',
+        position: 'sticky',
+        top: 0,
+        zIndex: 10
     },
     theadRow: {
     backgroundColor: '#F5F3F0',

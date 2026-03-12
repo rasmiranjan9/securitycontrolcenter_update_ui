@@ -199,7 +199,7 @@ const useStyles = makeStyles({
     filterPillActive: {
         backgroundColor: '#FFFFFF',
         border: '1px solid #E6ECF3',
-        color: '#1F2D3D',
+        color: '#193e6b',
         fontWeight: 600,
         borderRadius: '6px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -207,11 +207,16 @@ const useStyles = makeStyles({
 
     // Table
     tableWrap: {
-         flex: 1,
-        minHeight: 0,        // 👈 VERY IMPORTANT
+        flex: 1,
+        minHeight: 0,
         overflowY: 'auto',
         overflowX: 'hidden',
-        position: 'relative'
+        position: 'relative',
+        scrollbarWidth: 'none',   // Firefox
+        msOverflowStyle: 'none',  // IE / Edge
+        '::-webkit-scrollbar': {
+            display: 'none'       // Chrome / Safari
+        }
     },
     table: {
         width: '100%',

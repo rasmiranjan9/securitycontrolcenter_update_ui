@@ -32,8 +32,13 @@ const useStyles = makeStyles({
     height: '420px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    position: 'relative'
-    
+    position: 'relative',
+  scrollbarWidth: 'none',        // Firefox
+  msOverflowStyle: 'none',       // Edge / IE
+
+  '::-webkit-scrollbar': {
+    display: 'none'              // Chrome / Safari
+  }
   },
   dataTable: {
      width: '100%',

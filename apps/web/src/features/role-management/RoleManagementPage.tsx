@@ -60,9 +60,11 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     height: '520px'   // 👈 important
+    
   },
   searchWrap: {
     width: '100%',
+   
   },
  tableWrapper: {
   borderRadius: '8px',
@@ -71,8 +73,13 @@ const useStyles = makeStyles({
   flex: 1,            // 👈 important
   border: '1px solid #e5e7eb',
   overflowY: 'auto',
-  overflowX: 'hidden'
-
+  margin: '0 16px',
+  overflowX: 'hidden',
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none',
+  '::-webkit-scrollbar': {
+    display: 'none'
+  }
 },
   dataTable: {
     width: '100%',
@@ -80,19 +87,20 @@ const useStyles = makeStyles({
     borderSpacing: 0,
   },
   th: {
-  padding: '16px 18px',
+  padding: '14px 18px',
   fontSize: '14px',
   fontWeight: 600,
   color: '#1f3b64',
   textAlign: 'left',
-  backgroundColor: '#f1f3f5',
+  backgroundColor: '#f1f5f9',
 
    position: 'sticky',
   top: 0,
   zIndex: 10,
-  backgroundColor: '#f5f6f8',
   borderBottom: '1px solid #e5e7eb',
+  
 },
+
   td: {
     padding: '16px 18px',
     fontSize: '14px',
@@ -101,7 +109,8 @@ const useStyles = makeStyles({
   },
   tr: {
     ':hover': {
-      backgroundColor: 'rgba(0,0,0,0.02)',
+      backgroundColor: '#f8fafc',
+      
     },
   },
   cellPrimary: {
@@ -176,7 +185,7 @@ const useStyles = makeStyles({
   ':hover': {
     background: '#4b8f9d',
     color: '#ffffff',
-    borderColor: '#4b8f9d',
+    
   },
 },
   actions: {
@@ -188,21 +197,25 @@ const useStyles = makeStyles({
     fontSize: '13px',
     color: '#666666',
     marginTop: '8px',
+    margin: '0 16px'
   },
   searchWrapper:{
   display:"flex",
   alignItems:"center",
   gap:"10px",
-  background:"#ffffff",
+  background:"#f8fafc",
   border:"1px solid #e5e7eb",
   borderRadius:"10px",
-  padding:"10px 14px",
-  marginBottom:"18px"
+  padding:"12px 14px",
+  marginBottom:"15px",
+  marginTop:"12px",
+  marginLeft:"16px",   // 👈 left gap
+  marginRight:"16px"
 },
 
 searchIcon:{
   color:"#94a3b8",
-  fontSize:"18px"
+  fontSize:"16px"
 },
 
 searchInput:{
@@ -210,7 +223,8 @@ searchInput:{
   outline:"none",
   width:"100%",
   fontSize:"14px",
-  color:"#334155"
+  color:"#334155",
+  background:"transparent"
 }
 });
 

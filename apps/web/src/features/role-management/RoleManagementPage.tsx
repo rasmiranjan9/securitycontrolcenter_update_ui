@@ -1,13 +1,11 @@
 // apps/web/src/features/role-management/RoleManagementPage.tsx
 // Security Role Management — /roles
-// UI matched with UserRoleAssignmentPage + AuditLogViewerPage style
 
 import { ManagePermissionsModal } from "./components/ManagePermissionsModal";
 import { useState } from 'react';
 import {
   Button,
   Spinner,
-  Text,
   makeStyles,
   tokens,
 } from '@fluentui/react-components';
@@ -17,7 +15,6 @@ import {
   SettingsRegular,
   EditRegular,
   DeleteRegular,
-  ListRegular,
 } from '@fluentui/react-icons';
 import { usePermission } from '@/rbac/usePermission';
 import { usePermissionContext } from '@/rbac/PermissionContext';
@@ -76,12 +73,12 @@ const useStyles = makeStyles({
     overflow: 'hidden',
   },
 
-  // ── Filters wrapper (same as AssignmentFilters / AuditLogViewerPage) ──
+  // ── Filters wrapper ──
   filtersWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '12px',
-    padding: '16px 24px',
+    gap: '0',                          // ✅ gap hataya
+    padding: '16px 24px 12px 24px',   // ✅ bottom padding thoda kam
     position: 'sticky',
     top: 0,
     zIndex: 30,
@@ -92,18 +89,25 @@ const useStyles = makeStyles({
   searchRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '8px',
-    border: '1px solid #dee2e6',
-    paddingLeft: '12px',
-    paddingRight: '12px',
-    height: '36px',
+    gap: '10px',
+    width: '100%',
   },
   searchIcon: {
-    color: '#666666',
+    color: '#9ca3af',
     display: 'flex',
+    alignItems: 'center',
     flexShrink: 0,
+  },
+  searchInputWrapper: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    border: '1px solid #e5e7eb',
+    borderRadius: '8px',
+    height: '40px',
+    padding: '0 14px',
+    backgroundColor: '#ffffff',
+    boxSizing: 'border-box',
   },
   searchInput: {
     flex: 1,
@@ -111,50 +115,22 @@ const useStyles = makeStyles({
     outline: 'none',
     background: 'transparent',
     fontSize: '14px',
-    color: '#333333',
+    color: '#374151',
+    padding: '0',
+    height: '100%',
     fontFamily: 'inherit',
-    '::placeholder': { color: '#999999' },
+    WebkitAppearance: 'none',
+    appearance: 'none',
+    '::placeholder': {
+      color: '#9ca3af',
+      fontSize: '14px',
+    },
   },
 
-  // ── Filter pill tab row (same as AssignmentFilters) ──
-  tabRow: {
-    display: 'inline-flex',
-    backgroundColor: '#f1f3f5',
-    borderRadius: '10px',
-    padding: '4px',
-    gap: '4px',
-    width: 'fit-content',
-  },
-  filterTab: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '6px',
-    padding: '6px 14px',
-    fontSize: '14px',
-    color: '#555',
-    cursor: 'pointer',
-    fontFamily: 'inherit',
-    border: 'none',
-    borderRadius: '8px',
-    background: 'transparent',
-    ':hover': { backgroundColor: '#e9ecef' },
-  },
-  filterTabActive: {
-    backgroundColor: '#ffffff',
-    color: '#193e6b',
-    fontWeight: 600,
-    boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
-  },
-  tabIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    color: '#276dab',
-  },
-
-  // ── Table wrapper (same as AssignmentTable) ──
+  // ── Table wrapper ──
   tableWrapper: {
     padding: '10px 25px 25px 25px',
-    marginTop: '-20px',
+    marginTop: '0',                    // ✅ negative margin hataya
     borderRadius: '8px',
     backgroundColor: '#FFFFFF',
     boxShadow: '0 3px 10px rgba(0,0,0,0.05)',
@@ -304,10 +280,10 @@ const useStyles = makeStyles({
 // ─── Role badge colors ──────────────────────────────────────────────────────
 
 const ROLE_BADGE_COLORS: Record<string, { bg: string; color: string }> = {
-  COLLABORATOR: { bg: 'rgba(0,123,255,0.1)',   color: '#007bff' },
-  CONTRIBUTOR:  { bg: 'rgba(40,167,69,0.1)',   color: '#28a745' },
-  VIEWER:       { bg: 'rgba(255,193,7,0.1)',   color: '#ffc107' },
-  GLOBAL_ADMIN: { bg: 'rgba(220,53,69,0.1)',   color: '#dc3545' },
+  COLLABORATOR: { bg: 'rgba(0,123,255,0.1)',  color: '#007bff' },
+  CONTRIBUTOR:  { bg: 'rgba(40,167,69,0.1)',  color: '#28a745' },
+  VIEWER:       { bg: 'rgba(255,193,7,0.1)',  color: '#ffc107' },
+  GLOBAL_ADMIN: { bg: 'rgba(220,53,69,0.1)',  color: '#dc3545' },
 };
 
 // ─── Sub-components ─────────────────────────────────────────────────────────
@@ -388,14 +364,15 @@ function RoleManagementContent() {
   const styles = useStyles();
 
   const { data: allRoles, isLoading, error } = useRoles();
-  const [search, setSearch]                         = useState('');
-  const [showAddModal, setShowAddModal]             = useState(false);
-  const [editRole, setEditRole]                     = useState<SecurityRole | null>(null);
-  const [optimisticRoles, setOptimisticRoles]       = useState<SecurityRole[]>([]);
-  const [deletedRoleIds, setDeletedRoleIds]         = useState<ReadonlySet<string>>(new Set());
-  const [manageRole, setManageRole]                 = useState<SecurityRole | null>(null);
-  const [deleteRole, setDeleteRole]                 = useState<SecurityRole | null>(null);
-  const [showDeleteMessage, setShowDeleteMessage]   = useState(false);
+  const [search, setSearch]                       = useState('');
+  const [focused, setFocused]                     = useState(false);
+  const [showAddModal, setShowAddModal]           = useState(false);
+  const [editRole, setEditRole]                   = useState<SecurityRole | null>(null);
+  const [optimisticRoles, setOptimisticRoles]     = useState<SecurityRole[]>([]);
+  const [deletedRoleIds, setDeletedRoleIds]       = useState<ReadonlySet<string>>(new Set());
+  const [manageRole, setManageRole]               = useState<SecurityRole | null>(null);
+  const [deleteRole, setDeleteRole]               = useState<SecurityRole | null>(null);
+  const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
   const canCreate = usePermission('ROLE:CREATE' satisfies PermissionCode);
   const canDelete = usePermission('ROLE:DELETE' satisfies PermissionCode);
@@ -459,35 +436,33 @@ function RoleManagementContent() {
         {/* ── Filters wrapper ── */}
         <div className={styles.filtersWrapper}>
 
-          {/* Search bar */}
+          {/* ── Search bar ── */}
           <div className={styles.searchRow}>
             <span className={styles.searchIcon}>
-              <SearchRegular fontSize={16} />
+              <SearchRegular fontSize={18} />
             </span>
-            <input
-              className={styles.searchInput}
-              type="search"
-              placeholder="Search Roles by Name, Code, Solution, or Module..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="Search roles"
-            />
+            <div
+              className={styles.searchInputWrapper}
+              style={focused ? {
+                border: '1px solid #c7d2fe',
+                boxShadow: '0 0 0 2px rgba(99, 102, 241, 0.2)',
+              } : undefined}
+            >
+              <input
+                className={styles.searchInput}
+                type="search"
+                placeholder="Search Roles by Name, Code, Solution, or Module..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                aria-label="Search roles"
+              />
+            </div>
           </div>
 
-          {/* Filter pill tab — All Roles only (extend later) */}
-          <div className={styles.tabRow} role="tablist" aria-label="Filter roles">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={true}
-              className={`${styles.filterTab} ${styles.filterTabActive}`}
-            >
-              <span className={styles.tabIcon}>
-                <ListRegular fontSize={16} />
-              </span>
-              All Roles
-            </button>
-          </div>
+          {/* ✅ All Roles tab HATA DIYA */}
+
         </div>
 
         {/* ── Table ── */}
